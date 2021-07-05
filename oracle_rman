@@ -13,3 +13,24 @@ if(a<0.96):
  
  ##disk usage
  ##rman connect
+
+
+##in bash_profile
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+
+setPSELLPRP(){
+export ORACLE_HOME=/home/oracle/product/1980
+export ORACLE_TERM=xterm
+export PATH=/usr/sbin:/usr/local/bin:$PATH
+export PATH=$ORACLE_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
+export CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+ORACLE_SID=PSELLPRP; export ORACLE_SID
+}
+
+echo setPSELLPRP
+
+##
