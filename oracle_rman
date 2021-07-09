@@ -5,10 +5,10 @@ st = os.statvfs('/htest-oradata')
 a=(st.f_blocks - st.f_bavail) / st.f_blocks
 print a
 if(a>0.96):
- print "%96 more usage"
+ print "more than %96 usage"
  os.system('source ~oracle/.bash_profile;setPSELLPRP;rman target=/ << EOF \n delete noprompt force copy of archivelog all; \n EOF')
 if(a<0.96):
- print "%96 less usage"
+ print "less than %96 usage"
  #os.system('source ~oracle/.bash_profile;setPSELLPRP;rman target=/ << EOF \n delete noprompt copy of archivelog all; \n EOF')
  
  ##disk usage
