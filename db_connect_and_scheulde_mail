@@ -1,0 +1,96 @@
+import cx_Oracle
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import sys
+import schedule
+import time
+
+
+
+TS_PRD_NZELM11="""(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=ip)(PORT=port))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=sid)))"""
+
+
+def baglan():
+    connection = cx_Oracle.connect("user", "pass", TS_PRD_NZELM11, encoding="UTF-8")
+
+    cur = connection.cursor()
+    cur.execute("select thread#,sequence# from v$log where status='CURRENT'")
+    rows = cur.fetchall()
+    #for row in rows:
+        #print(row)
+    #print("instance number : "+str(rows[0][0]))
+    #print("Seq number : "+str(rows[0][1]))
+    #print("instance number : "+str(rows[1][0]))
+    #print("Seq number : "+str(rows[1][1]))
+    a=str(rows[0][1])+"/"+str(rows[1][1])
+    cur.close()
+    #print(a)
+    
+    cur2 = connection.cursor()
+    cur2.execute("SELECT sequence#, first_time, next_time, applied,thread# FROM v$archived_log where stamp=(SELECT MAX(stamp)  FROM v$archived_log where thread#=1 group by thread#)")
+    rows2=cur2.fetchall()
+    b=str(rows2[0][0])+" | "+str(rows2[0][1])+" | "+str(rows2[0][2])+" | "+str(rows2[0][3])+" | "+str(rows2[0][4])
+    cur2.close()
+    #print(b)
+   
+    
+    cur3 = connection.cursor()
+    cur3.execute("SELECT sequence#, first_time, next_time, applied,thread# FROM v$archived_log where stamp=(SELECT MAX(stamp)  FROM v$archived_log where thread#=2 group by thread#)")
+    rows3=cur3.fetchall()
+    c=str(rows3[0][0])+" | "+str(rows3[0][1])+" | "+str(rows3[0][2])+" | "+str(rows3[0][3])+" | "+str(rows3[0][4])
+    cur3.close()
+    #print(c)
+    
+    
+    cur4=connection.cursor()
+    cur4.execute("SELECT /*+ rule */ ARCH.THREAD# Thread, ARCH.SEQUENCE# Last_Sequence_Received,APPL.SEQUENCE# Last_Sequence_Applied, (ARCH.SEQUENCE# - APPL.SEQUENCE#) Difference  FROM(SELECT THREAD# ,SEQUENCE# FROM V$ARCHIVED_LOG WHERE (THREAD#,FIRST_TIME ) IN(SELECT THREAD#,MAX(FIRST_TIME) FROM V$ARCHIVED_LOG GROUP BY THREAD#)) ARCH,  (SELECT THREAD# ,SEQUENCE# FROM V$LOG_HISTORY WHERE (THREAD#,FIRST_TIME ) IN(SELECT THREAD#,MAX(FIRST_TIME) FROM V$LOG_HISTORY GROUP BY THREAD#)) APPL WHERE ARCH.THREAD# = APPL.THREAD# ORDER BY 1")
+    rows4=cur4.fetchall()
+    ara="Thread | son_alinan | son_apply | fark\n"
+    d=str(rows4[0][0])+" | "+str(rows4[0][1])+" | "+str(rows4[0][2])+" | "+str(rows4[0][3])
+    e=str(rows4[1][0])+" | "+str(rows4[1][1])+" | "+str(rows4[1][2])+" | "+str(rows4[1][3])
+
+    #print(a)
+    k=a+"\n\n"+b+"\n"+c+"\n\n"+ara+d+"\n"+e
+    
+    
+    return k
+
+def mail_gonder():
+    a=baglan()
+    try:
+        mail = smtplib.SMTP("smtp.gmail.com",587)
+        mail.ehlo()
+        mail.starttls()
+        mail.login("mail", "pass")
+
+        mesaj = MIMEMultipart()
+        mesaj["From"] = "from"           # Gönderen
+        mesaj["Subject"] = "Nzelm current seq"    # Konusu
+        mesaj["To"] = "to" 
+
+        body = "Selamlar "+a
+
+        body_text = MIMEText(body, "plain")  #
+        mesaj.attach(body_text)
+
+        mail.sendmail(mesaj["From"], mesaj["To"],mesaj.as_string())
+        print("Mail başarılı bir şekilde gönderildi.")
+        mail.close()
+
+# Eğer mesaj gönderirken hata olursa, hata mesajını konsole yazdırıyorum.
+    except:
+        print("Hata:", sys.exc_info()[0])
+    
+
+
+mail_gonder()
+schedule.every().day.at("09:00").do(mail_gonder)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+
+
+
+
