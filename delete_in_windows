@@ -1,0 +1,12 @@
+import os
+
+print(os.getcwd())
+os.chdir('C:/Users/User/Desktop/Kodlarim/python/selenium_turkcell/static/img')
+print(os.getcwd())
+
+directory = os.getcwd()
+for f in os.listdir():
+    print(f)
+    if f[-3:] == 'png':
+        print("silinecek")
+        os.remove(f)
