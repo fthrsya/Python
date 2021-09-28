@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ajax</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    	<link href="../static/css/bootsrap/bootstrap.min.css" rel="stylesheet">
+    <script src="../static/js/bootstrap/feather.min.js" ></script>
+<script src="../static/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../static/js/bootstrap/dashboard.js"></script>
+<script src="../static/js/bootstrap/Chart.min.js"></script>
+
+
+</head>
+<body>
+
+    
+
+
+ <div id="loading" class="text-center">
+     <p>Lütfen Bekleyiniz ...</p>
+<img src="/static/img/load.gif" weight=50 height=50>
+</div>
+
+
+
+    <p id="tcell" align="center"></p> </br>
+
+
+<div class="text-center">
+<a onClick="window.location.reload()"><button>Yenile</button></a>
+   </div>
+	</br>
+ </br>
+
+<script src="../static/js/jquery-3.6.0.min.js"></script>
+<script type=text/javascript>
+
+		$(function tcell() {
+
+	$.ajax({
+	  url: "/tcell",
+	  type: 'POST',
+	  async: true,
+	  success: function( result ) {
+		$( "#tcell" ).html( result );
+	  },
+        beforeSend: function (result) {
+        $('#loading').show();
+    },  complete: function () {
+        $("#loading").hide();
+    }
+
+	}).responseText;
+
+	});
+
+
+
+
+
+</script>
+</body>
+</html>
