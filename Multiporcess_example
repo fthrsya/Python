@@ -1,0 +1,21 @@
+import multiprocessing
+
+def worker():
+    """worker function"""
+    print ('Worker')
+
+
+def mm():
+        print(str(multiprocessing.current_process().name) + ' İslem : ' + str(i) )
+  
+
+
+if __name__ == '__main__':
+    jobs = []
+
+    cpu = multiprocessing.cpu_count()
+    print("CPU count=" + str(cpu))
+    for i in range(cpu):
+        p = multiprocessing.Process(target=mm)
+        jobs.append(p)
+        p.start()
