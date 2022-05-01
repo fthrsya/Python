@@ -1,0 +1,20 @@
+import sys
+import telnetlib
+
+#host=sys.argv[1]
+#portno=sys.argv[2]
+
+host="10.73.93.4"
+portno="1522"
+
+i=1500
+while i<1600:
+    try:
+        conn = telnetlib.Telnet(host,i,1)
+        response = host+' ' + str(i) +' - Success'
+
+    except:
+        response = host+' ' + str(i) +' - Failed'
+    finally:
+        i = i + 1
+        print(response)
