@@ -10,3 +10,4 @@ Python
     -python 2.x network monitor in linux
     -paralel example
     -multiprocess example
+    -telnet
