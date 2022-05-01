@@ -11,3 +11,4 @@ Python
     -paralel example
     -multiprocess example
     -telnet
+    -telnet2
