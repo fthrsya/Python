@@ -12,3 +12,4 @@ Python
     -multiprocess example
     -telnet
     -telnet2
+    -telnet3
