@@ -1,0 +1,19 @@
+source ~oracle/.bash_profile
+setASM
+
+deger=`asmcmd du --suppressheader +UNCSTBYDG/UNCSTBY/ARCHIVELOG/ |  awk '{print $1}'`
+echo $deger
+
+source ~oracle/.bash_profile
+setUNCSTBY
+
+if [ "$deger" -le 1100000 ]
+then
+echo "sorun yok"
+else
+rman target=/ << EOF
+DELETE force noprompt ARCHIVELOG FROM TIME "SYSDATE-1/24";
+EOF
+fi
+
+
