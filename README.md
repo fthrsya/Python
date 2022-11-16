@@ -13,3 +13,5 @@ Python
     -telnet
     -telnet2
     -telnet3
+    -oracle_rman
+    -oracle_rman2
