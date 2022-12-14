@@ -1,0 +1,28 @@
+import os
+
+
+with open("split.txt",'r',encoding="utf-8") as file:
+    lines = file.readlines()
+
+
+print(len(lines))
+
+
+with open("1.txt",'w',encoding="utf-8") as file:
+    for line in lines[:5000000]:
+        file.write(line)
+        
+
+with open("2.txt",'w',encoding="utf-8") as file:
+    for line in lines[5000000:10000000]:
+        file.write(line)
+            
+
+with open("3.txt",'w',encoding="utf-8") as file:
+    for line in lines[10000000:15000000]:
+        file.write(line)
+            
+
+with open("4.txt",'w',encoding="utf-8") as file:
+    for line in lines[15000000:]:
+        file.write(line)
