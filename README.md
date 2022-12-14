@@ -15,3 +15,4 @@ Python
     -telnet3
     -oracle_rman
     -oracle_rman2
+    -file_split
