@@ -16,3 +16,4 @@ Python
     -oracle_rman
     -oracle_rman2
     -file_split
+    -namaz_vakit
