@@ -17,3 +17,4 @@ Python
     -oracle_rman2
     -file_split
     -namaz_vakit
+    -thread_limit
