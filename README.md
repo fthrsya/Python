@@ -18,3 +18,4 @@ Python
     -file_split
     -namaz_vakit
     -thread_limit
+    -port_scanner_dev
