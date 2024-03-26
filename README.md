@@ -19,3 +19,4 @@ Python
     -namaz_vakit
     -thread_limit
     -port_scanner_dev
+    -while_break
